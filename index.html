@@ -1,0 +1,66 @@
+<!DOCTYPE html>
+<html >
+<head>
+  <meta charset="UTF-8">
+  <title>Show the Local Weather</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+<link href="https://fonts.googleapis.com/css?family=Quicksand:400" rel="stylesheet">
+
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/normalize/5.0.0/normalize.min.css">
+
+  <link rel='stylesheet prefetch' href='https://cdnjs.cloudflare.com/ajax/libs/twitter-bootstrap/4.0.0-alpha.6/css/bootstrap.min.css'>
+<link rel='stylesheet prefetch' href='https://cdnjs.cloudflare.com/ajax/libs/weather-icons/2.0.9/css/weather-icons.min.css'>
+<link rel='stylesheet prefetch' href='https://maxcdn.bootstrapcdn.com/font-awesome/4.7.0/css/font-awesome.min.css'>
+
+      <link rel="stylesheet" href="css/style.css">
+
+  
+</head>
+
+<body>
+  <div id="control-panel">
+  <div id="temp-control"></div>  
+</div>
+  
+<div id="content">
+  <i id="weather-icon"></i>
+  
+  <div id="temp-location">
+    <h1 id="temp"></h1>
+    <sup id="temp-unit"></sup>
+    <h1 id="location"></h1>
+  </div>
+  
+  <h4 id="weather-main"></h4>
+  
+  <div id="weather-other">
+    <div class="weather-other-el">
+      <i id="temp-max-icon" aria-hidden="true"></i>
+      <h6 id="temp-max"></h6>
+    </div>
+
+    <div class="weather-other-el">
+      <i id="temp-min-icon" aria-hidden="true"></i>
+      <h6 id="temp-min"></h6>
+    </div>
+
+    <div class="weather-other-el">
+      <i id="humidity-icon" aria-hidden="true"></i>
+      <h6 id="humidity"></h6>
+    </div>
+  </div>
+  
+  <div id="datetime">
+    <h1 id="time"></h1>
+    <h6 id="date"></h6>
+  </div>
+</div>
+
+<div id="spacer"></div>
+  <script src='https://cdnjs.cloudflare.com/ajax/libs/jquery/3.2.1/jquery.min.js'></script>
+<script src='https://cdnjs.cloudflare.com/ajax/libs/moment.js/2.18.1/moment.min.js'></script>
+
+    <script src="js/index.js"></script>
+
+</body>
+</html>

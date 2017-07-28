@@ -1,0 +1,98 @@
+/* Reusables -------------------------------------------------------- */
+
+/* Font sizes */
+$mobile-fontsize: 12px;
+$tablet-fontsize: 16px;
+$spacing: 0.2;
+$mobile-spacing: $mobile-fontsize * $spacing;
+$tablet-spacing: $tablet-fontsize * $spacing;
+
+.center {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+
+.circle {
+  border-radius: 50%;
+  width: 2.5rem;
+  height: 2.5rem;
+}
+
+/* Style ------------------------------------------------------------ */
+
+/* Uppercase all text. */
+div {
+  text-transform: uppercase;
+}
+
+html, body {
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+  height: 100%;
+  width: 100%;
+  font-size: $mobile-fontsize;
+  letter-spacing: $mobile-spacing;
+  @media (min-width: 768px) {
+    font-size: $tablet-fontsize;
+    letter-spacing: $tablet-spacing;
+  }
+  font-family: 'Quicksand', sans-serif;
+}
+
+#control-panel {
+  display: flex;
+  justify-content: left;
+  flex-direction: column;
+  width: 100%;
+  margin: 2rem 0 0 2rem;
+}
+
+#temp-control {
+  @extend .circle;
+  @extend .center;
+}
+
+#content, #datetime {
+  @extend .center;
+  flex-direction: column;
+  align-self: center;
+}
+
+#weather-icon {
+  font-size: 7rem;
+  margin: 0 0 2rem 0;
+}
+
+#temp-unit {
+  font-size: 1.5rem;
+}
+
+#temp-location {
+  @extend .center;
+  flex-direction: row;
+}
+
+#weather-other {
+  width: 15rem;
+  @extend .center;
+  justify-content: space-around;
+  flex-direction: row;
+}
+
+.weather-other-el {
+  @extend .center;
+  flex-direction: row;
+  h6 {
+    margin-bottom: 0;
+  }
+}
+
+#temp-max-icon, #temp-min-icon, #humidity-icon {
+  margin-right: 0.4rem;
+}
+
+#datetime {
+  margin: 3rem 0 0 0;
+}
