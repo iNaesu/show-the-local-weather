@@ -9,34 +9,6 @@ function display_error(errorMsg) {
   $('#content').append('<h6>' + errorMsg + '</h6>');
 }
 
-function c_to_f(tempC) {
-  return Math.round(tempC * (9 / 5) + 32);
-}
-
-function build_weather_object(jsonData) {
-  const weather = new Object();
-
-  weather.tempC = Math.round(jsonData.main.temp);
-  weather.tempF = c_to_f(weather.tempC)
-  
-  weather.tempMaxC = Math.round(jsonData.main.temp_max);
-  weather.tempMaxF = c_to_f(weather.tempMaxC)
-  
-  weather.tempMinC = Math.round(jsonData.main.temp_min);
-  weather.tempMinF = c_to_f(weather.tempMinC)
-  
-  weather.location = jsonData.name;
-  weather.humidity = Math.round(jsonData.main.humidity);
-  weather.description = jsonData.weather[0].description;
-
-  weather.lat = jsonData.coord.lat; 
-  weather.lon = jsonData.coord.lon;
-  weather.sunset = jsonData.sys.sunset;
-  weather.sunrise = jsonData.sys.sunrise;
-    
-  return weather;
-}
-
 function display_temp_data(weather, tempUnits) {
   if ((tempUnits !== 'C') && (tempUnits !=='F')) {
     display_error('Invalid temperature unit');
@@ -246,24 +218,216 @@ function get_weather_at_position(position) {
 
 function run_weather_app() {
   /* Get Geolocation */
-  if ('geolocation' in navigator) {
-    var options = {
-      enableHighAccuracy: true,
-      timeout: 15000,
-      maximumAge: 0
-    };
-    navigator.geolocation.getCurrentPosition(
-      get_weather_at_position,
-      function(error) {
-        display_error(error.message);
-      },
-      options
-    );
-  } else {
+  if (!('geolocation' in navigator)) {
     display_error('Geolocation not supported');
   }
+  var options = {
+    enableHighAccuracy: true,
+    timeout: 15000,
+    maximumAge: 0
+  };
+  navigator.geolocation.getCurrentPosition(
+    get_weather_at_position,
+    function(error) {
+      display_error(error.message);
+    },
+    options
+  );
 }
 
-/* Start of script --------------------------------- */
+/* Function Declarations ---------------------------------------------------- */
 
-run_weather_app();
+/**
+ * Returns a jqXhr object from a weather web API
+ * @param {Coord} coords
+ * @return {jqXhr} jqXhr object from a weather web API
+ */
+function getWeather(coords) {
+  var endpoint =
+    'https://fcc-weather-api.glitch.me/api/current?lat=' + coords.lat + 
+    '&lon=' + coords.lon;
+  
+  return $.ajax({
+    url: endpoint,
+    dataType: 'jsonp',
+    timeout: 2500
+  });
+}
+
+/**
+ * Returns a jqXhr object from a local time web API
+ * @param {Coord} coords
+ * @param {number} unixTime
+ * @return {jqXhr} jqXhr object from a local time web API
+ */
+function getLocalTime(coords, unixTime) {
+  var apiKey = 'AIzaSyAJweTA4a_krVKkipVQ1DtVu4DYjnr44dA';
+  var endpoint = 'https://maps.googleapis.com/maps/api/timezone/json?location=' 
+                 + coords.lat + ',' + coords.lon + '&timestamp=' + unixTime + 
+                 '&key=' + apiKey;
+  return $.ajax({
+    url: endpoint
+  });
+}
+
+/**
+ * Convert and return temperature from celsius to fahrenheit
+ * @param {number} tempC - Temperature in celsius
+ * @return {number} 
+ */
+function celsiusToFahrenheit(tempC) {
+  return Math.round(tempC * (9 / 5) + 32);
+}
+
+/**
+ * Builds a weather object from response from freeCodeCamp weather API.
+ * URL: https://fcc-weather-api.glitch.me
+ * @constructor
+ * @param {weatherResponse}
+ */
+function weather(weatherResponse) {
+  var w = weatherResponse[0];
+
+  this.tempC = Math.round(w.main.temp);
+  this.tempF = celsiusToFahrenheit(this.tempC)
+  
+  this.tempMaxC = Math.round(w.main.temp_max);
+  this.tempMaxF = celsiusToFahrenheit(this.tempMaxC)
+  
+  this.tempMinC = Math.round(w.main.temp_min);
+  this.tempMinF = celsiusToFahrenheit(this.tempMinC)
+  
+  this.nameOfPlace = w.name;
+  this.humidity = Math.round(w.main.humidity);
+  this.description = w.weather[0].description;
+
+  this.sunset = w.sys.sunset;
+  this.sunrise = w.sys.sunrise;
+}
+
+/**
+ * Calculate local time from response from Google Timezone API.
+ * URL: https://developers.google.com/maps/documentation/timezone/start
+ * @param {localTimeResponse}
+ * @param {number} unixTime
+ * @return {number} localTime
+ */
+function calculateLocalTime(localTimeResponse, unixTime) {
+  console.log(localTimeResponse[0]);
+  daylightSavingsOffset = localTimeResponse[0].dstOffset;
+  rawOffset = localTimeResponse[0].rawOffset;
+
+  return unixTime + daylightSavingsOffset + rawOffset;
+}
+
+/**
+ * Callback for getGeolocation.
+ * @param {Coord} coords
+ */
+function getGeolocationCb(coords) {
+  /* Get weather */
+  var weatherXhr = getWeather(coords);
+  /* Get local time */
+  var d = new Date();
+  var unixTime = Math.round(d.getTime() / 1000);
+  var localTimeXhr = getLocalTime(coords, unixTime);
+
+  /* Handle getWeather and getLocalTime errors */
+  weatherXhr.fail(function(error) {
+    display_error('getWeather: ' + error.status + ', ' + error.statusText);
+  });
+  localTimeXhr.fail(function(error) {
+    display_error('getLocalTime: ' + error.status + ', ' + error.statusText);
+  });
+
+  /* Successfully got weather and local time. Process and display data. */
+  $.when(weatherXhr, localTimeXhr).done(
+    function(weatherResponse, localTimeResponse) {
+      /* Make a weather object. */
+      var weatherData = new weather(weatherResponse);
+      /* Calculate local time. */
+      var localTime = calculateLocalTime(localTimeResponse, unixTime);
+    }
+  );
+}
+
+/**
+ * Get coordinates. Tries to detect HTML5 geolocation but falls back to a
+ * constant geolocation if unavailable.
+ * @param {getGeolocationCb} callback
+ */
+function getGeolocation(callback) {
+
+  /**
+   * Coordinates (latitude and longitude)
+   * @typedef {object} Coord
+   * @property {number} lat
+   * @property {number} lon
+   */
+  var coords = new Object();
+  coords.lat = null;
+  coords.lon = null;
+ 
+  /**
+   * Detect HTML5 geolocation
+   * @reject - Browser does not have geolocation or an error occured fetching
+   *           geolocation 
+   * @resolve - Successfully detected HTML5 geolocation
+   */
+  var detectGeolocation = new Promise(
+    function(resolve, reject) {
+      /* Check if browser has geolocation */
+      if (!('geolocation' in navigator)) {
+        reject();
+      }
+
+      /* Try to get detect current HTML coordinates */
+      var options = {
+        enableHighAccuracy: true,
+        timeout: 10000,
+        maximumAge: 0
+      };
+      navigator.geolocation.getCurrentPosition(
+        function(positionData) { //Success cb
+          resolve(positionData);
+        },
+        function() { //Error cb
+          reject();
+        },
+        options
+      );
+    }
+  );
+
+  /* Run callback function with detected/hardcoded geolocation */
+  detectGeolocation
+    .then(function(positionData) {
+      /* Promise resolved. Use HTML5 geolocation coords */  
+      coords.lat = positionData.coords.latitude;  
+      coords.lon = positionData.coords.longitude;  
+      callback(coords);
+    })
+    .catch(function() {
+      /* Promise rejected. Use harcoded New York coordinates */
+      coords.lat = 40.7128;
+      coords.lon = 74.0059;
+      callback(coords);
+    });
+}
+
+function displayApp(weatherData, localTime) {
+}
+
+
+/* Start of script ---------------------------------------------------------- */
+
+/* Get geolocation */
+getGeolocation(getGeolocationCb);
+  
+  
+  
+  
+  
+  
+  
+  
