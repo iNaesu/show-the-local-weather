@@ -81,7 +81,8 @@ function display_error(errorMsg) {
 }
 
 /**
- * Returns a jqXhr object from a weather web API
+ * Returns a jqXhr object from freeCodeCamp weather API.
+ * URL: https://fcc-weather-api.glitch.me
  * @param {Coord} coords
  * @return {jqXhr} jqXhr object from a weather web API
  */
@@ -98,12 +99,13 @@ function getWeather(coords) {
 }
 
 /**
- * Returns a jqXhr object from a local time web API
+ * Returns a timezone jqXhr object from a Google Time Zone API
+ * URL: https://developers.google.com/maps/documentation/timezone/start
  * @param {Coord} coords
  * @param {number} unixTime
- * @return {jqXhr} jqXhr object from a local time web API
+ * @return {jqXhr} jqXhr object from Google Time Zone API
  */
-function getLocalTime(coords, unixTime) {
+function getTimezone(coords, unixTime) {
   var apiKey = 'AIzaSyAJweTA4a_krVKkipVQ1DtVu4DYjnr44dA';
   var endpoint = 'https://maps.googleapis.com/maps/api/timezone/json?location=' 
                  + coords.lat + ',' + coords.lon + '&timestamp=' + unixTime + 
@@ -150,17 +152,15 @@ function weather(weatherResponse) {
 }
 
 /**
- * Calculate local time from response from Google Timezone API.
+ * Builds a timezone object from response from Google Timezone API.
  * URL: https://developers.google.com/maps/documentation/timezone/start
- * @param {localTimeResponse}
+ * @param {timezoneResponse}
  * @param {number} unixTime
- * @return {number} localTime
  */
-function calculateLocalTime(localTimeResponse, unixTime) {
-  daylightSavingsOffset = localTimeResponse[0].dstOffset;
-  rawOffset = localTimeResponse[0].rawOffset;
-
-  return unixTime + daylightSavingsOffset + rawOffset;
+function timezone(timezoneResponse, unixTime) {
+  this.daylightSavingsOffset = timezoneResponse[0].dstOffset;
+  this.rawOffset = timezoneResponse[0].rawOffset;
+  this.unixTime = unixTime;
 }
 
 /**
@@ -168,30 +168,30 @@ function calculateLocalTime(localTimeResponse, unixTime) {
  * @param {Coord} coords
  */
 function getGeolocationCb(coords) {
-  /* Get weather */
+  /* Get weather data */
   var weatherXhr = getWeather(coords);
-  /* Get local time */
+  /* Get timezone data */
   var d = new Date();
   var unixTime = Math.round(d.getTime() / 1000);
-  var localTimeXhr = getLocalTime(coords, unixTime);
+  var timezoneXhr = getTimezone(coords, unixTime);
 
-  /* Handle getWeather and getLocalTime errors */
+  /* Handle getWeather and getTimezone errors */
   weatherXhr.fail(function(error) {
     displayError('getWeather: ' + error.status + ', ' + error.statusText);
   });
-  localTimeXhr.fail(function(error) {
-    displayError('getLocalTime: ' + error.status + ', ' + error.statusText);
+  timezoneXhr.fail(function(error) {
+    displayError('getTimezone: ' + error.status + ', ' + error.statusText);
   });
 
-  /* Successfully got weather and local time. Process and display data. */
-  $.when(weatherXhr, localTimeXhr).done(
-    function(weatherResponse, localTimeResponse) {
+  /* Successfully got weather and timezone data. Process and display data. */
+  $.when(weatherXhr, timezoneXhr).done(
+    function(weatherResponse, timezoneResponse) {
       /* Construct a weather object */
       var weatherData = new weather(weatherResponse);
-      /* Calculate local time */
-      var localTime = calculateLocalTime(localTimeResponse, unixTime);
+      /* Construct a timezone object */
+      var timezoneData = new timezone(timezoneResponse, unixTime);
       /* Display app */
-      displayApp(weatherData, localTime);
+      displayApp(weatherData, timezoneData);
     }
   );
 }
@@ -324,13 +324,19 @@ function displayTempData(weatherData, tempUnits) {
 
 /**
  * Display local time.
- * @param {number} localTime
+ * @param {Timezone} timezoneData
  */
-function displayLocalTime(localTime) {
-  console.log(localTime);
-  var time = moment(localTime.toString(), 'X').utcOffset(0).format('h:mm A');
-  var date = moment(localTime.toString(), 'X')
-    .utcOffset(0).format('ddd D MMM YYYY');
+function displayLocalTime(timezoneData) {
+  var unixTime  = timezoneData.unixTime;
+  /* Total offset in minutes */
+  var totalOffsetInMin = 
+    (timezoneData.daylightSavingsOffset + timezoneData.rawOffset) / 60;
+
+  var time = moment(unixTime.toString(), 'X')
+    .utcOffset(totalOffsetInMin).format('h:mm A');
+  var date = moment(unixTime.toString(), 'X')
+    .utcOffset(totalOffsetInMin).format('ddd D MMM YYYY');
+
   $('#time').text(time);
   $('#date').text(date);
 }
@@ -340,12 +346,14 @@ function displayLocalTime(localTime) {
  * weather.
  * @param {array} themesLUT
  * @param {Weather} weatherData
- * @{number} localTime
+ * @{number} timezoneData
  */
-function applyTheme(themesLUT, weatherData, localTime) {
+/* TODO */
+function applyTheme(themesLUT, weatherData, timezoneData) {
   var weatherDescription = weatherData.description; 
   var sunrise = weatherData.sunrise;
   var sunset = weatherData.sunset;
+  var unixTime = timezoneData.unixTime; 
 
   /* Default theme colors */
   var weatherIconClass = themesLUT[0].weatherIconClass;
@@ -360,7 +368,7 @@ function applyTheme(themesLUT, weatherData, localTime) {
         weatherIconClass = themesLUT[i].weatherIconClass;
 
         /* Set color scheme based on whether time is before/after sunset */
-        if ((localTime > sunrise) && (localTime < sunset)) {
+        if ((unixTime > sunrise) && (unixTime < sunset)) {
           /* Use day theme */
           fg_color = themesLUT[i].day_fg_color;
           bg_color = themesLUT[i].day_bg_color;
@@ -385,9 +393,9 @@ function applyTheme(themesLUT, weatherData, localTime) {
 /**
  * Display weather app.
  * @param {Weather} weatherData
- * @param {number} localTime
+ * @param {Timezone} timezoneData
  */
-function displayApp(weatherData, localTime) {
+function displayApp(weatherData, timezoneData) {
   /* Temperature control & data*/
   tempControl(weatherData);
   /* Temperature data */
@@ -403,10 +411,10 @@ function displayApp(weatherData, localTime) {
   $('#humidity').text(weatherData.humidity + '%');
 
   /* Display local time */
-  displayLocalTime(localTime);
+  displayLocalTime(timezoneData);
 
   /* Apply theme */
-  applyTheme(themesLUT, weatherData, localTime);
+  applyTheme(themesLUT, weatherData, timezoneData);
 
   /* Display location search box */
 }
