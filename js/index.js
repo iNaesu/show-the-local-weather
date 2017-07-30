@@ -499,6 +499,119 @@ function displayLocalTime(localTime) {
   $('#date').text(date);
 }
 
+const themesLUT = [
+  /* Default */
+  {
+    'keywords': ['default'],
+    'weatherIconClass': 'wi wi-moon-full',
+    'day_bg_color': 'white',
+    'day_fg_color': 'black',
+    'night_bg_color': 'white',
+    'night_fg_color': 'black'
+  },
+  /* Clear */
+  {
+    'keywords': ['clear', 'sun'],
+    'weatherIconClass': 'wi wi-moon-full',
+    'day_bg_color': '#5EBBE5',
+    'day_fg_color': '#F5EA2B',
+    'night_bg_color': '#5EBBE5',
+    'night_fg_color': '#F5EA2B'
+  },
+  /* Cloud */
+  {
+    'keywords': ['cloud', 'overcast'],
+    'weatherIconClass': 'wi wi-cloudy',
+    'day_bg_color': '#90C2D5',
+    'day_fg_color': '#FFF',
+    'night_bg_color': '#90C2D5',
+    'night_fg_color': '#FFF'
+  },
+  /* Fog */
+  {
+    'keywords': ['fog', 'mist', 'smog', 'smoke'],
+    'weatherIconClass': 'wi wi-fog',
+    'day_bg_color': '#BBAFC3',
+    'day_fg_color': '#38343A',
+    'night_bg_color': '#BBAFC3',
+    'night_fg_color': '#38343A'
+  },
+  /* Rain */
+  {
+    'keywords': ['rain', 'drizzl', 'shower', 'pour', 'wet', 'sprinkle'],
+    'weatherIconClass': 'wi wi-showers',
+    'day_bg_color': '#4C91C6',
+    'day_fg_color': '#FFF',
+    'night_bg_color': '#4C91C6',
+    'night_fg_color': '#FFF'
+  },
+  /* Storm */
+  {
+    'keywords': ['storm', 'thunder', 'lightning'],
+    'weatherIconClass': 'wi wi-storm-showers',
+    'day_bg_color': '#2C3338',
+    'day_fg_color': '#FFF36A',
+    'night_bg_color': '#2C3338',
+    'night_fg_color': '#FFF36A'
+  },
+  /* Snow */
+  {
+    'keywords': ['snow', 'hail', 'blizzard', 'sleet', 'ice'],
+    'weatherIconClass': 'wi wi-snow',
+    'day_bg_color': '#EAF6FF',
+    'day_fg_color': '#77B5E5',
+    'night_bg_color': '#EAF6FF',
+    'night_fg_color': '#77B5E5'
+  },
+]
+
+/**
+ * Apply theme (weather icon, color scheme) based on the current time and
+ * weather.
+ * @param {array} themesLUT
+ * @param {Weather} weatherData
+ * @{number} localTime
+ */
+function applyTheme(themesLUT, weatherData, localTime) {
+  var weatherDescription = weatherData.description; 
+  var sunrise = weatherData.sunrise;
+  var sunset = weatherData.sunset;
+
+  /* Default theme colors */
+  var weatherIconClass = themesLUT[0].weatherIconClass;
+  var fg_color = themesLUT[0].day_fg_color;
+  var bg_color = themesLUT[0].day_bg_color;
+  
+  /* Search LUT for theme that has weatherDescription in the theme keywords */
+  for(let i = 0; i < themesLUT.length; i++) {
+    for (let j = 0; j < themesLUT[i].keywords.length; j++) {
+      if (weatherDescription.indexOf(themesLUT[i].keywords[j]) !== -1) {
+        /* Set weather icon */
+        weatherIconClass = themesLUT[i].weatherIconClass;
+
+        /* Set color scheme based on whether time is before/after sunset */
+        if ((localTime > sunrise) && (localTime < sunset)) {
+          /* Use day theme */
+          fg_color = themesLUT[i].day_fg_color;
+          bg_color = themesLUT[i].day_bg_color;
+        } else {
+          /* Use night theme */
+          fg_color = themesLUT[i].night_fg_color;
+          bg_color = themesLUT[i].night_bg_color;
+        }
+      } 
+    }
+  }
+
+  /* Set weather Icon */
+  $('#weather-icon').addClass(weatherIconClass);
+  /* Set bg and fb colors */
+  $('body').css('background-color', bg_color);
+  $('body').css('color', fg_color);
+  $('#temp-control').css('background-color', fg_color);
+  $('#temp-control').css('color', bg_color);
+}
+
 /**
  * Display weather app.
  * @param {Weather} weatherData
@@ -513,7 +626,7 @@ function displayApp(weatherData, localTime) {
   /* NameOfPlace */
   $('#location').html('&nbsp;in&nbsp;' + weatherData.nameOfPlace);
   /* Weather description */
-  $('#weather-main').text(weather.description);
+  $('#weather-main').text(weatherData.description);
 
   /* humidity */
   $('#humidity-icon').addClass('fa fa-tint');
@@ -521,6 +634,9 @@ function displayApp(weatherData, localTime) {
 
   /* Display local time */
   displayLocalTime(localTime);
+
+  /* Apply theme */
+  applyTheme(themesLUT, weatherData, localTime);
 
   /* Display location search box */
 }
