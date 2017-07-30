@@ -1,5 +1,3 @@
-/* Globals ---------------------------------------------------------- */
-
 var tempUnits = 'C';
 
 /* Function definitions --------------------------------------------- */
@@ -238,6 +236,15 @@ function run_weather_app() {
 /* Function Declarations ---------------------------------------------------- */
 
 /**
+ * Display error message
+ * @param {'string'} errorMsg
+ */
+function display_error(errorMsg) {
+  $('#content').html('<h1>:(</h1>');
+  $('#content').append('<h6>' + errorMsg + '</h6>');
+}
+
+/**
  * Returns a jqXhr object from a weather web API
  * @param {Coord} coords
  * @return {jqXhr} jqXhr object from a weather web API
@@ -283,7 +290,8 @@ function celsiusToFahrenheit(tempC) {
  * Builds a weather object from response from freeCodeCamp weather API.
  * URL: https://fcc-weather-api.glitch.me
  * @constructor
- * @param {weatherResponse}
+ * @param {} weatherResponse - Response from the freeCodeCamp
+ *                             weather API.
  */
 function weather(weatherResponse) {
   var w = weatherResponse[0];
@@ -313,7 +321,6 @@ function weather(weatherResponse) {
  * @return {number} localTime
  */
 function calculateLocalTime(localTimeResponse, unixTime) {
-  console.log(localTimeResponse[0]);
   daylightSavingsOffset = localTimeResponse[0].dstOffset;
   rawOffset = localTimeResponse[0].rawOffset;
 
@@ -334,19 +341,21 @@ function getGeolocationCb(coords) {
 
   /* Handle getWeather and getLocalTime errors */
   weatherXhr.fail(function(error) {
-    display_error('getWeather: ' + error.status + ', ' + error.statusText);
+    displayError('getWeather: ' + error.status + ', ' + error.statusText);
   });
   localTimeXhr.fail(function(error) {
-    display_error('getLocalTime: ' + error.status + ', ' + error.statusText);
+    displayError('getLocalTime: ' + error.status + ', ' + error.statusText);
   });
 
   /* Successfully got weather and local time. Process and display data. */
   $.when(weatherXhr, localTimeXhr).done(
     function(weatherResponse, localTimeResponse) {
-      /* Make a weather object. */
+      /* Construct a weather object */
       var weatherData = new weather(weatherResponse);
-      /* Calculate local time. */
+      /* Calculate local time */
       var localTime = calculateLocalTime(localTimeResponse, unixTime);
+      /* Display app */
+      displayApp(weatherData, localTime);
     }
   );
 }
@@ -415,7 +424,105 @@ function getGeolocation(callback) {
     });
 }
 
+/**
+ * Display the temperature control button.
+ * @param {Weather} weatherData
+ */
+function tempControl(weatherData) {
+  /* Temp control */
+  $('#temp-control').text('°' + tempUnits).click(function() {
+    /* Toggle temp units */
+    if (tempUnits === 'C') {
+      tempUnits = 'F';
+    } else if (tempUnits === 'F') {
+      tempUnits = 'C';
+    } else {
+      displayError('Invalid temperature unit');
+    }
+    
+    /* Change text on temp control button */
+    $('#temp-control').text('°' + tempUnits);
+   
+    /* Re-display temperature data */
+    displayTempData(weatherData, tempUnits);
+  });
+}
+
+/**
+ * Display temperature data.
+ * @param {Weather} weatherData
+ * @param {string} Temperature units ('C' or 'F')
+ */
+function displayTempData(weatherData, tempUnits) {
+  if ((tempUnits !== 'C') && (tempUnits !=='F')) {
+    displayError('Invalid temperature unit');
+    return;
+  }
+  
+  var temp;
+  var tempMax;
+  var tempMin;
+  
+  if (tempUnits === 'C') {
+    temp = weatherData.tempC;
+    tempMax = weatherData.tempMaxC;
+    tempMin = weatherData.tempMinC;
+  } else if (tempUnits === 'F') {
+    temp = weatherData.tempF;
+    tempMax = weatherData.tempMaxF;
+    tempMin = weatherData.tempMinF;  
+  }
+  
+  /* Current temp */
+  $('#temp').text(temp);
+  $('#temp-unit').text('°' + tempUnits);
+  
+  /* Max temp */
+  $('#temp-max-icon').addClass('fa fa-long-arrow-up');
+  $('#temp-max').text(tempMax + '°' + tempUnits);
+  
+  /* Min temp */
+  $('#temp-min-icon').addClass('fa fa-long-arrow-down');
+  $('#temp-min').text(tempMin + '°' + tempUnits);
+}
+
+/**
+ * Display local time.
+ * @param {number} localTime
+ */
+function displayLocalTime(localTime) {
+  console.log(localTime);
+  var time = moment(localTime.toString(), 'X').utcOffset(0).format('h:mm A');
+  var date = moment(localTime.toString(), 'X')
+    .utcOffset(0).format('ddd D MMM YYYY');
+  $('#time').text(time);
+  $('#date').text(date);
+}
+
+/**
+ * Display weather app.
+ * @param {Weather} weatherData
+ * @param {number} localTime
+ */
 function displayApp(weatherData, localTime) {
+  /* Temperature control & data*/
+  tempControl(weatherData);
+  /* Temperature data */
+  displayTempData(weatherData, tempUnits);
+
+  /* NameOfPlace */
+  $('#location').html('&nbsp;in&nbsp;' + weatherData.nameOfPlace);
+  /* Weather description */
+  $('#weather-main').text(weather.description);
+
+  /* humidity */
+  $('#humidity-icon').addClass('fa fa-tint');
+  $('#humidity').text(weatherData.humidity + '%');
+
+  /* Display local time */
+  displayLocalTime(localTime);
+
+  /* Display location search box */
 }
 
 
