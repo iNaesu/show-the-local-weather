@@ -18,8 +18,8 @@ const themesLUT = [
     'weatherIconClass': 'wi wi-moon-full',
     'day_bg_color': '#5EBBE5',
     'day_fg_color': '#F5EA2B',
-    'night_bg_color': '#5EBBE5',
-    'night_fg_color': '#F5EA2B'
+    'night_bg_color': '#091216',
+    'night_fg_color': '#FBF6AA'
   },
   /* Cloud */
   {
@@ -27,8 +27,8 @@ const themesLUT = [
     'weatherIconClass': 'wi wi-cloudy',
     'day_bg_color': '#90C2D5',
     'day_fg_color': '#FFF',
-    'night_bg_color': '#90C2D5',
-    'night_fg_color': '#FFF'
+    'night_bg_color': '#1C262A',
+    'night_fg_color': '#AAA'
   },
   /* Fog */
   {
@@ -36,8 +36,8 @@ const themesLUT = [
     'weatherIconClass': 'wi wi-fog',
     'day_bg_color': '#BBAFC3',
     'day_fg_color': '#38343A',
-    'night_bg_color': '#BBAFC3',
-    'night_fg_color': '#38343A'
+    'night_bg_color': '#2C292E',
+    'night_fg_color': '#BBAFC3'
   },
   /* Rain */
   {
@@ -45,16 +45,16 @@ const themesLUT = [
     'weatherIconClass': 'wi wi-showers',
     'day_bg_color': '#4C91C6',
     'day_fg_color': '#FFF',
-    'night_bg_color': '#4C91C6',
-    'night_fg_color': '#FFF'
+    'night_bg_color': '#162B3B',
+    'night_fg_color': '#B7D3E8'
   },
   /* Storm */
   {
     'keywords': ['storm', 'thunder', 'lightning'],
     'weatherIconClass': 'wi wi-storm-showers',
-    'day_bg_color': '#2C3338',
+    'day_bg_color': '#111',
     'day_fg_color': '#FFF36A',
-    'night_bg_color': '#2C3338',
+    'night_bg_color': '#111',
     'night_fg_color': '#FFF36A'
   },
   /* Snow */
@@ -64,7 +64,7 @@ const themesLUT = [
     'day_bg_color': '#EAF6FF',
     'day_fg_color': '#77B5E5',
     'night_bg_color': '#EAF6FF',
-    'night_fg_color': '#77B5E5'
+    'night_fg_color': '#476C89'
   },
 ]
 
@@ -348,7 +348,6 @@ function displayLocalTime(timezoneData) {
  * @param {Weather} weatherData
  * @{number} timezoneData
  */
-/* TODO */
 function applyTheme(themesLUT, weatherData, timezoneData) {
   var weatherDescription = weatherData.description; 
   var sunrise = weatherData.sunrise;
