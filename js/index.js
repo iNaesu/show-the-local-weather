@@ -421,6 +421,10 @@ function displayApp(weatherData, timezoneData) {
 
 /* Start of script ---------------------------------------------------------- */
 
+/* Link search box to google maps API */
+var input = document.getElementById('location-search');
+var searchBox = new google.maps.places.SearchBox(input);
+
 /* Get geolocation */
 getGeolocation(getGeolocationCb);
   
