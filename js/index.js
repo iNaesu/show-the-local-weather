@@ -1,6 +1,7 @@
 /* Globals  ----------------------------------------------------------------- */
 
 var tempUnits = 'C';
+var apiKey = 'AIzaSyAJweTA4a_krVKkipVQ1DtVu4DYjnr44dA';
 
 const themesLUT = [
   /* Default */
@@ -75,7 +76,7 @@ const themesLUT = [
  * Display error message
  * @param {'string'} errorMsg
  */
-function display_error(errorMsg) {
+function displayError(errorMsg) {
   $('#content').html('<h1>:(</h1>');
   $('#content').append('<h6>' + errorMsg + '</h6>');
 }
@@ -94,7 +95,7 @@ function getWeather(coords) {
   return $.ajax({
     url: endpoint,
     dataType: 'jsonp',
-    timeout: 2500
+    timeout: 10000
   });
 }
 
@@ -106,12 +107,12 @@ function getWeather(coords) {
  * @return {jqXhr} jqXhr object from Google Time Zone API
  */
 function getTimezone(coords, unixTime) {
-  var apiKey = 'AIzaSyAJweTA4a_krVKkipVQ1DtVu4DYjnr44dA';
   var endpoint = 'https://maps.googleapis.com/maps/api/timezone/json?location=' 
                  + coords.lat + ',' + coords.lon + '&timestamp=' + unixTime + 
                  '&key=' + apiKey;
   return $.ajax({
-    url: endpoint
+    url: endpoint,
+    timeout: 10000
   });
 }
 
@@ -164,7 +165,7 @@ function timezone(timezoneResponse, unixTime) {
 }
 
 /**
- * Callback for getGeolocation.
+ * Callback once geolocation is obtained.
  * @param {Coord} coords
  */
 function getGeolocationCb(coords) {
@@ -197,22 +198,22 @@ function getGeolocationCb(coords) {
 }
 
 /**
+ * Builds a coordinates object.
+ * @constructor
+ * @param {number} lat - Latitude
+ * @param {number} lon - Longitude
+ */
+function coord(lat, lon) {
+  this.lat = lat;
+  this.lon = lon;
+}
+
+/**
  * Get coordinates. Tries to detect HTML5 geolocation but falls back to a
  * constant geolocation if unavailable.
- * @param {getGeolocationCb} callback
+ * @param {function} callback
  */
 function getGeolocation(callback) {
-
-  /**
-   * Coordinates (latitude and longitude)
-   * @typedef {object} Coord
-   * @property {number} lat
-   * @property {number} lon
-   */
-  var coords = new Object();
-  coords.lat = null;
-  coords.lon = null;
- 
   /**
    * Detect HTML5 geolocation
    * @reject - Browser does not have geolocation or an error occured fetching
@@ -248,8 +249,9 @@ function getGeolocation(callback) {
   detectGeolocation
     .then(function(positionData) {
       /* Promise resolved. Use HTML5 geolocation coords */  
-      coords.lat = positionData.coords.latitude;  
-      coords.lon = positionData.coords.longitude;  
+      var lat = positionData.coords.latitude;  
+      var lon = positionData.coords.longitude;  
+      var coords = new coord(lat, lon);
       callback(coords);
     })
     .catch(function() {
@@ -381,7 +383,7 @@ function applyTheme(themesLUT, weatherData, timezoneData) {
   }
 
   /* Set weather Icon */
-  $('#weather-icon').addClass(weatherIconClass);
+  $('#weather-icon').removeClass().addClass(weatherIconClass);
   /* Set bg and fb colors */
   $('body').css('background-color', bg_color);
   $('body').css('color', fg_color);
@@ -416,17 +418,61 @@ function displayApp(weatherData, timezoneData) {
   applyTheme(themesLUT, weatherData, timezoneData);
 
   /* Display location search box */
+  $('#location-search').css('display', 'block');
 }
 
 
+/**
+ * Get the coordinates of a user input location and call a callback function
+ * using the coordinates.
+ * @param {function} callback
+ */
+function locationSearch(callback) {
+  /* Link search box to google maps API */
+  var input = document.getElementById('location-search');
+  var searchBox = new google.maps.places.SearchBox(input);
+
+  /* Get coordinates of the location via Google Geocode API */
+  searchBox.addListener('places_changed', function() {
+    var places = searchBox.getPlaces();
+
+    if (places.length === 0) {
+      /* Invalid place name */
+      return;
+    }
+
+    /* Call Google Geocode API */
+    var nameOfPlace = places[0].formatted_address.replace(' ', '+');
+    var endpoint = 'https://maps.googleapis.com/maps/api/geocode/' + 
+                   'json?address=' + nameOfPlace + '&key=' + apiKey;
+    $.ajax({
+      url: endpoint,
+      timeout: 2500,
+      success: function(locationData) {
+        console.log(locationData);
+        var lat = locationData.results[0].geometry.location.lat;
+        var lon = locationData.results[0].geometry.location.lng;
+        var coords = new coord(lat, lon);
+        callback(coords);
+      },
+      error: function(error) {
+        displayError(
+          'locationSearch: ' + error.status + ', ' + error.statusText
+        );
+      }
+    });
+  });
+}
+
 /* Start of script ---------------------------------------------------------- */
 
-/* Link search box to google maps API */
-var input = document.getElementById('location-search');
-var searchBox = new google.maps.places.SearchBox(input);
+$(document).ready(function() {
+  /* Get geolocation */
+  getGeolocation(getGeolocationCb);
 
-/* Get geolocation */
-getGeolocation(getGeolocationCb);
+  /* Init location search box */
+  locationSearch(getGeolocationCb);
+});
   
   
   
