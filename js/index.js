@@ -348,10 +348,8 @@ function displayLocalTime(timezoneData) {
  * @param {string} fg_color
  */
 function setSearchBoxDropdownColors(bg_color, fg_color) {
-  $('.pac-container').attr('id', 'dropdown');
-  /* Panel background color */
   $('.pac-container').css('background-color', fg_color);
-  $('.pac-container pac-item-selected').css('background-color', 'pink !important');
+  $('.pac-container').css('color', bg_color);
 }
 
 /**

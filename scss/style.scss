@@ -109,18 +109,17 @@ html, body {
   outline: 0;
 }
 
+/* TODO - Document what's going on here */
 .pac-container {
   .pac-item {
     border: none;
-//    color: blue;
-//    background-color: green;
-//
-//    .pac-item-query, .pac-matched{
-//      color: blue;
-//    }   
-//}
-//
-//.pac-item:hover, .pac-item-selected {
-//  background-color: green;
+    color: inherit;
+  
+    .pac-item-query, .pac-matched, .pac-icon{
+      color: inherit;
+    }   
+  }
+  .pac-item:hover, .pac-item-selected {
+    background-color: transparent;
   }
 }
