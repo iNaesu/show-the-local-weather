@@ -19,6 +19,7 @@ $tablet-spacing: $tablet-fontsize * $spacing;
   height: 2.5rem;
 }
 
+
 /* Style ------------------------------------------------------------ */
 
 /* Uppercase all text. */
@@ -55,6 +56,9 @@ html, body {
 }
 
 #content, #datetime {
+  * {
+    text-align: center;   
+  }
   @extend .center;
   flex-direction: column;
   align-self: center;
@@ -63,10 +67,6 @@ html, body {
 #weather-icon {
   font-size: 7rem;
   margin: 0 0 2rem 0;
-}
-
-#temp-unit {
-  font-size: 1.5rem;
 }
 
 #temp-location {
@@ -99,4 +99,28 @@ html, body {
 
 #location-search {
   display: none;
+  margin: 2rem;
+  border-radius: 100rem;
+  border: none;
+  width: 15rem;
+}
+
+#location-search:focus {
+  outline: 0;
+}
+
+.pac-container {
+  .pac-item {
+    border: none;
+//    color: blue;
+//    background-color: green;
+//
+//    .pac-item-query, .pac-matched{
+//      color: blue;
+//    }   
+//}
+//
+//.pac-item:hover, .pac-item-selected {
+//  background-color: green;
+  }
 }

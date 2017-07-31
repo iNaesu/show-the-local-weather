@@ -33,7 +33,7 @@ const themesLUT = [
   },
   /* Fog */
   {
-    'keywords': ['fog', 'mist', 'smog', 'smoke'],
+    'keywords': ['fog', 'mist', 'smog', 'smoke', 'haze'],
     'weatherIconClass': 'wi wi-fog',
     'day_bg_color': '#BBAFC3',
     'day_fg_color': '#38343A',
@@ -256,8 +256,7 @@ function getGeolocation(callback) {
     })
     .catch(function() {
       /* Promise rejected. Use harcoded Manhattan coordinates */
-      coords.lat = 40.7851;
-      coords.lon = -73.9682;
+      var coords = new coord(40.7851, -73.9682);
       callback(coords);
     });
 }
@@ -312,8 +311,8 @@ function displayTempData(weatherData, tempUnits) {
   }
   
   /* Current temp */
-  $('#temp').text(temp);
-  $('#temp-unit').text('°' + tempUnits);
+  $('#temp-location').text(temp);
+  $('#temp-location').append('°' + tempUnits);
   
   /* Max temp */
   $('#temp-max-icon').addClass('fa fa-long-arrow-up');
@@ -341,6 +340,18 @@ function displayLocalTime(timezoneData) {
 
   $('#time').text(time);
   $('#date').text(date);
+}
+
+/**
+ * Set colors of the Google search box drop down panel.
+ * @param {string} bg_color
+ * @param {string} fg_color
+ */
+function setSearchBoxDropdownColors(bg_color, fg_color) {
+  $('.pac-container').attr('id', 'dropdown');
+  /* Panel background color */
+  $('.pac-container').css('background-color', fg_color);
+  $('.pac-container pac-item-selected').css('background-color', 'pink !important');
 }
 
 /**
@@ -384,11 +395,19 @@ function applyTheme(themesLUT, weatherData, timezoneData) {
 
   /* Set weather Icon */
   $('#weather-icon').removeClass().addClass(weatherIconClass);
-  /* Set bg and fb colors */
+
+  /* Set bg and fg colors */
   $('body').css('background-color', bg_color);
   $('body').css('color', fg_color);
+  /* Temp control colors */
   $('#temp-control').css('background-color', fg_color);
   $('#temp-control').css('color', bg_color);
+  /* Google search box colors */
+  $('#location-search').css('background-color', fg_color);
+  $('#location-search').css('color', bg_color);
+
+  /* Google dropdown colors */
+  setSearchBoxDropdownColors(bg_color, fg_color);
 }
 
 /**
@@ -403,7 +422,7 @@ function displayApp(weatherData, timezoneData) {
   displayTempData(weatherData, tempUnits);
 
   /* NameOfPlace */
-  $('#location').html('&nbsp;in&nbsp;' + weatherData.nameOfPlace);
+  $('#temp-location').append('&nbsp;in&nbsp;' + weatherData.nameOfPlace);
   /* Weather description */
   $('#weather-main').text(weatherData.description);
 
@@ -449,7 +468,6 @@ function locationSearch(callback) {
       url: endpoint,
       timeout: 2500,
       success: function(locationData) {
-        console.log(locationData);
         var lat = locationData.results[0].geometry.location.lat;
         var lon = locationData.results[0].geometry.location.lng;
         var coords = new coord(lat, lon);
