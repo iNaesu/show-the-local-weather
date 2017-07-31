@@ -253,9 +253,9 @@ function getGeolocation(callback) {
       callback(coords);
     })
     .catch(function() {
-      /* Promise rejected. Use harcoded New York coordinates */
-      coords.lat = 40.7128;
-      coords.lon = 74.0059;
+      /* Promise rejected. Use harcoded Manhattan coordinates */
+      coords.lat = 40.7851;
+      coords.lon = -73.9682;
       callback(coords);
     });
 }
