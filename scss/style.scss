@@ -20,6 +20,13 @@ $font-stack: 'Quicksand', sans-serif;
   height: 2.5rem;
 }
 
+.grow {
+  transition: all .05s ease-in-out;
+}
+.grow:hover {
+  transform: scale(1.2);
+}
+
 
 /* Document ----------------------------------------------------------------- */
 
@@ -44,6 +51,7 @@ html, body {
   height: 100%;
   margin: 0;
   overflow: hidden;
+  cursor: default;
 }
 
 
@@ -60,6 +68,8 @@ html, body {
 #temp-control {
   @extend .circle;
   @extend .center;
+  font-weight: 700;
+  cursor: pointer;
 }
 
 
