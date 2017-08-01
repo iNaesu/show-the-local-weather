@@ -111,14 +111,17 @@ html, body {
 
 /* TODO - Document what's going on here */
 .pac-container {
+  letter-spacing: $mobile-spacing / 2;
+
   .pac-item {
     border: none;
     color: inherit;
-  
-    .pac-item-query, .pac-matched, .pac-icon{
+
+    .pac-item-query, .pac-matched {
       color: inherit;
     }   
   }
+
   .pac-item:hover, .pac-item-selected {
     background-color: transparent;
   }
