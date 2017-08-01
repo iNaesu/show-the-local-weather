@@ -1,0 +1,31 @@
+{
+  "name": "show-the-local-weather",
+  "version": "1.0.0",
+  "description": "An app that shows the weather at the user's current location or a user-entered location.",
+  "main": "index.html",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/iNaesu/show-the-local-weather.git"
+  },
+  "keywords": [
+    "weather",
+    "local",
+    "freecodecamp"
+  ],
+  "author": "Sean Law",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/iNaesu/show-the-local-weather/issues"
+  },
+  "homepage": "https://github.com/iNaesu/show-the-local-weather#readme",
+  "devDependencies": {
+    "gulp": "^3.9.1",
+    "gulp-sass": "^3.1.0"
+  },
+  "dependencies": {
+    "browser-sync": "^2.18.13"
+  }
+}
