@@ -264,10 +264,11 @@ function getGeolocation(callback) {
 /**
  * Display the temperature control button.
  * @param {Weather} weatherData
+ * @param {Timezone} timezoneData
  */
-function tempControl(weatherData) {
-  /* Temp control */
-  $('#temp-control').text('°' + tempUnits).click(function() {
+function tempControl(weatherData, timezoneData) {
+  /* Only bind one click handler */
+  $('#temp-control').text('°' + tempUnits).off('click').on('click', function() {
     /* Toggle temp units */
     if (tempUnits === 'C') {
       tempUnits = 'F';
@@ -276,21 +277,21 @@ function tempControl(weatherData) {
     } else {
       displayError('Invalid temperature unit');
     }
-    
     /* Change text on temp control button */
     $('#temp-control').text('°' + tempUnits);
    
-    /* Re-display temperature data */
-    displayTempData(weatherData, tempUnits);
+    /* Redisplay updated temperature info */
+    displayWeather(weatherData, tempUnits, timezoneData);
   });
 }
 
 /**
- * Display temperature data.
+ * Display weather data.
  * @param {Weather} weatherData
  * @param {string} Temperature units ('C' or 'F')
+ * @param {Timezone} timezoneData
  */
-function displayTempData(weatherData, tempUnits) {
+function displayWeather(weatherData, tempUnits, timezoneData) {
   if ((tempUnits !== 'C') && (tempUnits !=='F')) {
     displayError('Invalid temperature unit');
     return;
@@ -309,10 +310,17 @@ function displayTempData(weatherData, tempUnits) {
     tempMax = weatherData.tempMaxF;
     tempMin = weatherData.tempMinF;  
   }
-  
-  /* Current temp */
+
+  /* Apply theme */
+  applyTheme(themesLUT, weatherData, timezoneData);
+
+  /* Current temp at location*/
   $('#temp-location').text(temp);
   $('#temp-location').append('°' + tempUnits);
+  $('#temp-location').append('&nbsp;in&nbsp;' + weatherData.nameOfPlace);
+
+  /* Weather description */
+  $('#weather-main').text(weatherData.description);
   
   /* Max temp */
   $('#temp-max-icon').addClass('fa fa-long-arrow-up');
@@ -321,6 +329,10 @@ function displayTempData(weatherData, tempUnits) {
   /* Min temp */
   $('#temp-min-icon').addClass('fa fa-long-arrow-down');
   $('#temp-min').text(tempMin + '°' + tempUnits);
+
+  /* humidity */
+  $('#humidity-icon').addClass('fa fa-tint');
+  $('#humidity').text(weatherData.humidity + '%');
 }
 
 /**
@@ -414,25 +426,14 @@ function applyTheme(themesLUT, weatherData, timezoneData) {
  * @param {Timezone} timezoneData
  */
 function displayApp(weatherData, timezoneData) {
-  /* Temperature control & data*/
-  tempControl(weatherData);
-  /* Temperature data */
-  displayTempData(weatherData, tempUnits);
+  /* Temperature control */
+  tempControl(weatherData, timezoneData);
 
-  /* NameOfPlace */
-  $('#temp-location').append('&nbsp;in&nbsp;' + weatherData.nameOfPlace);
-  /* Weather description */
-  $('#weather-main').text(weatherData.description);
-
-  /* humidity */
-  $('#humidity-icon').addClass('fa fa-tint');
-  $('#humidity').text(weatherData.humidity + '%');
+  /* Weather data */
+  displayWeather(weatherData, tempUnits, timezoneData);
 
   /* Display local time */
   displayLocalTime(timezoneData);
-
-  /* Apply theme */
-  applyTheme(themesLUT, weatherData, timezoneData);
 
   /* Display location search box */
   $('#location-search').css('display', 'block');
