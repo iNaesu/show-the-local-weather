@@ -130,6 +130,7 @@ html, body {
 #location-search {
   text-transform: uppercase;
   font-family: $font-stack;
+  font-weight: 700;
   letter-spacing: $mobile-spacing / 2;
   @media (min-width: 768px) {
     letter-spacing: $tablet-spacing / 2;
@@ -143,6 +144,7 @@ html, body {
 /* Location searchbox dropdown (Google searchbox) --------------------------- */
 
 .pac-container {
+  font-family: $font-stack;
   letter-spacing: $mobile-spacing / 2;
   @media (min-width: 768px) {
     letter-spacing: $tablet-spacing / 2;
