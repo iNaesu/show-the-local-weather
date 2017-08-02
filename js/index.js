@@ -447,6 +447,11 @@ function displayApp(weatherData, timezoneData) {
  * @param {function} callback
  */
 function locationSearch(callback) {
+  /* Clear text when textbox is selected */
+  $('#location-search:text').on('focus', function() {
+    $(this).val('');
+  });
+
   /* Link search box to google maps API */
   var input = document.getElementById('location-search');
   var searchBox = new google.maps.places.SearchBox(input);
@@ -468,7 +473,7 @@ function locationSearch(callback) {
                    'json?address=' + nameOfPlace + '&key=' + apiKey;
     $.ajax({
       url: endpoint,
-      timeout: 2500,
+      timeout: 10000,
       success: function(locationData) {
         var lat = locationData.results[0].geometry.location.lat;
         var lon = locationData.results[0].geometry.location.lng;
