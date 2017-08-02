@@ -437,6 +437,7 @@ function displayApp(weatherData, timezoneData) {
 
   /* Display location search box */
   $('#location-search').css('display', 'block');
+  $('#search-icon').css('display', 'block');
 }
 
 
