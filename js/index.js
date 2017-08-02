@@ -453,8 +453,10 @@ function locationSearch(callback) {
 
   /* Get coordinates of the location via Google Geocode API */
   searchBox.addListener('places_changed', function() {
-    var places = searchBox.getPlaces();
+    /* Show loading spinner */
+    showSpinner();
 
+    var places = searchBox.getPlaces();
     if (places.length === 0) {
       /* Invalid place name */
       return;
@@ -482,12 +484,21 @@ function locationSearch(callback) {
   });
 }
 
+/**
+ * Show spinner.
+ */
+function showSpinner() {
+  $('#weather-icon').removeClass().addClass('fa fa-cog fa-spin');
+}
+
+
 /* Start of script ---------------------------------------------------------- */
 
 $(document).ready(function() {
+  /* Show loading spinner */
+  showSpinner();
   /* Get geolocation */
   getGeolocation(getGeolocationCb);
-
   /* Init location search box */
   locationSearch(getGeolocationCb);
 });
