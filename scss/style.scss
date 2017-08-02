@@ -114,20 +114,22 @@ html, body {
 }
 
 #datetime {
-  margin: 1.5rem 0 0 0;
+  margin: 1.5rem 0 1.5rem 0;
 }
 
 /* Location search box ------------------------------------------------------ */
 
-#location-search {
-  display: none;
-  margin: 1.5rem;
-  border-radius: 100rem;
-  border: none;
-  width: 15rem;
+#location-search-wrapper {
+  @extend .center;
+  flex-direction: row;
 }
 
 #location-search {
+  display: none;
+  margin: 0 0 0 0.5rem;
+  border-radius: 100rem;
+  border: none;
+  width: 15rem;
   text-transform: uppercase;
   font-family: $font-stack;
   font-weight: 700;
@@ -136,6 +138,7 @@ html, body {
     letter-spacing: $tablet-spacing / 2;
   }
 }
+
 #location-search:focus {
   outline: 0;
 }
