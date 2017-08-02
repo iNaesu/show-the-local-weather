@@ -17,7 +17,7 @@ const themesLUT = [
   {
     'keywords': ['clear', 'sun'],
     'weatherIconClass': 'wi wi-moon-full',
-    'day_bg_color': '#5EBBE5',
+    'day_bg_color': '#4B95B7',
     'day_fg_color': '#F5EA2B',
     'night_bg_color': '#091216',
     'night_fg_color': '#FBF6AA'
@@ -26,7 +26,7 @@ const themesLUT = [
   {
     'keywords': ['cloud', 'overcast'],
     'weatherIconClass': 'wi wi-cloudy',
-    'day_bg_color': '#90C2D5',
+    'day_bg_color': '#739BAA',
     'day_fg_color': '#FFF',
     'night_bg_color': '#1C262A',
     'night_fg_color': '#AAA'
