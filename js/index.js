@@ -451,9 +451,13 @@ function displayApp(weatherData, timezoneData) {
  */
 function locationSearch(callback) {
   /* Clear text when textbox is selected */
-  $('#location-search:text').on('focus', function() {
-    $(this).val('');
-  });
+  $('#location-search:text')
+    .on('focus', function() {
+      $(this).val('');
+    })
+    .on('click', function() {
+      $(this).val('');
+    });
 
   /* Link search box to google maps API */
   var input = document.getElementById('location-search');
