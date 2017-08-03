@@ -52,6 +52,9 @@ html, body {
   font-family: $font-stack;
   height: 100%;
   min-height: 300px;
+  @media (min-width: 768px) {
+    min-height: 450px;
+  }
 }
 
 
@@ -117,6 +120,7 @@ html, body {
   margin: 1.5rem 0 1.5rem 0;
 }
 
+
 /* Location search box ------------------------------------------------------ */
 
 #location-search-wrapper {
@@ -173,6 +177,7 @@ html, body {
     background-color: transparent;
   }
 }
+
 
 /* Error msg ---------------------------------------------------------------- */
 #error-msg {
