@@ -77,8 +77,8 @@ const themesLUT = [
  * @param {'string'} errorMsg
  */
 function displayError(errorMsg) {
-  $('#content').html('<h1>:(</h1>');
-  $('#content').append('<h6>' + errorMsg + '</h6>');
+  $('#weather-icon').removeClass().addClass('fa fa-frown-o');
+  $('#error-msg').html(`<h6>Error | ${errorMsg}</h6>`);
 }
 
 /**

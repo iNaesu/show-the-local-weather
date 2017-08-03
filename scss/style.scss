@@ -26,6 +26,9 @@ $font-stack: 'Quicksand', sans-serif;
 .grow:hover {
   transform: scale(1.2);
 }
+.grow:active {
+  transform: scale(1.4);
+}
 
 
 /* Document ----------------------------------------------------------------- */
