@@ -50,11 +50,7 @@ html, body {
     letter-spacing: $tablet-spacing;
   }
   font-family: $font-stack;
-  /* Disable scrollbar */
   height: 100%;
-  margin: 0;
-  overflow: hidden;
-  cursor: default;
 }
 
 
@@ -65,7 +61,7 @@ html, body {
   justify-content: left;
   flex-direction: column;
   width: 100%;
-  margin: 2rem 0 0 2rem;
+  padding: 2rem 0 0 2rem;
 }
 
 #temp-control {
