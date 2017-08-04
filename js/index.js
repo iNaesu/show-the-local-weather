@@ -315,9 +315,9 @@ function displayWeather(weatherData, tempUnits, timezoneData) {
   applyTheme(themesLUT, weatherData, timezoneData);
 
   /* Current temp at location*/
-  $('#temp-location').text(temp);
-  $('#temp-location').append('°' + tempUnits);
-  $('#temp-location').append('&nbsp;in&nbsp;' + weatherData.nameOfPlace);
+  $('#temp-location')
+    .text(temp).append('°' + tempUnits)
+    .append('&nbsp;in&nbsp;' + weatherData.nameOfPlace);
 
   /* Weather description */
   $('#weather-main').text(weatherData.description);
@@ -360,8 +360,9 @@ function displayLocalTime(timezoneData) {
  * @param {string} fg_color
  */
 function setSearchBoxDropdownColors(bg_color, fg_color) {
-  $('.pac-container').css('background-color', fg_color);
-  $('.pac-container').css('color', bg_color);
+  $('.pac-container')
+    .css('background-color', fg_color)
+    .css('color', bg_color);
 }
 
 /**
@@ -421,14 +422,12 @@ function applyTheme(themesLUT, weatherData, timezoneData) {
   $('#weather-icon').removeClass().addClass(weatherIconClass);
 
   /* Set bg and fg colors */
-  $('body').css('background-color', bg_color);
-  $('body').css('color', fg_color);
+  $('body').css('color', fg_color).css('background-color', bg_color);
   /* Temp control colors */
-  $('#temp-control').css('background-color', fg_color);
-  $('#temp-control').css('color', bg_color);
+  $('#temp-control').css('color', bg_color).css('background-color', fg_color);
   /* Google search box colors */
-  $('#location-search').css('background-color', fg_color);
-  $('#location-search').css('color', bg_color);
+  $('#location-search')
+    .css('color', bg_color).css('background-color', fg_color);
 
   /* Google dropdown colors */
   setSearchBoxDropdownColors(bg_color, fg_color);
@@ -528,9 +527,6 @@ $(document).ready(function() {
   /* Init location search box */
   locationSearch(getGeolocationCb);
 });
-  
-  
-  
   
   
   
