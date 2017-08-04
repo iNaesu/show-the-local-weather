@@ -13,21 +13,22 @@ An app to display the local weather and time. See it on
 ## Prerequisites
 
 * [npm](https://www.npmjs.com/get-npm)
+* [gulp](https://github.com/gulpjs/gulp/blob/master/docs/getting-started.md)
 
 ## Installing
 
-Run the following in the project root:
+Run the following command in the project root:
 
     $ npm install
 
 ## Usage
 
-To run the locally, run the following in the project root:
+To run the app locally, run the following command in the project root:
 
     $ gulp serve
 
-This will launch the app on http://localhost:3000 and reload the app if changes
-are made to:
+This will launch the app on http://localhost:3000 and reload the app when any 
+changes are made to:
 * index.html
 * scss/style.scss
 * js/index.js 

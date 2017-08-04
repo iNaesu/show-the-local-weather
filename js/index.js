@@ -390,14 +390,28 @@ function applyTheme(themesLUT, weatherData, timezoneData) {
         weatherIconClass = themesLUT[i].weatherIconClass;
 
         /* Set color scheme based on whether time is before/after sunset */
-        if ((unixTime > sunrise) && (unixTime < sunset)) {
-          /* Use day theme */
-          fg_color = themesLUT[i].day_fg_color;
-          bg_color = themesLUT[i].day_bg_color;
+        if (sunset > sunrise) {
+          /* Sunrise & sunset from the same day */'
+          if ((unixTime > sunrise) && (unixTime < sunset)) {
+            /* Use day theme */
+            fg_color = themesLUT[i].day_fg_color;
+            bg_color = themesLUT[i].day_bg_color;
+          } else {
+            /* Use night theme */
+            fg_color = themesLUT[i].night_fg_color;
+            bg_color = themesLUT[i].night_bg_color;
+          }
         } else {
-          /* Use night theme */
-          fg_color = themesLUT[i].night_fg_color;
-          bg_color = themesLUT[i].night_bg_color;
+          /* Tomorrow's sunrise & today's sunset */'
+          if ((unixTime < sunrise) && (unixTime > sunset)) {
+            /* Use night theme */
+            fg_color = themesLUT[i].night_fg_color;
+            bg_color = themesLUT[i].night_bg_color;
+          } else {
+            /* Use day theme */
+            fg_color = themesLUT[i].day_fg_color;
+            bg_color = themesLUT[i].day_bg_color;
+          }
         }
       } 
     }
