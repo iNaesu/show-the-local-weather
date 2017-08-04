@@ -391,7 +391,7 @@ function applyTheme(themesLUT, weatherData, timezoneData) {
 
         /* Set color scheme based on whether time is before/after sunset */
         if (sunset > sunrise) {
-          /* Sunrise & sunset from the same day */'
+          /* Sunrise & sunset from the same day */
           if ((unixTime > sunrise) && (unixTime < sunset)) {
             /* Use day theme */
             fg_color = themesLUT[i].day_fg_color;
@@ -402,7 +402,7 @@ function applyTheme(themesLUT, weatherData, timezoneData) {
             bg_color = themesLUT[i].night_bg_color;
           }
         } else {
-          /* Tomorrow's sunrise & today's sunset */'
+          /* Tomorrow's sunrise & today's sunset */
           if ((unixTime < sunrise) && (unixTime > sunset)) {
             /* Use night theme */
             fg_color = themesLUT[i].night_fg_color;
