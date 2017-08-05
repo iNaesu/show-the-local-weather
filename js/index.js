@@ -1,3 +1,15 @@
+/* Start of script ---------------------------------------------------------- */
+
+$(document).ready(function() {
+  /* Show loading spinner */
+  showSpinner();
+  /* Get geolocation */
+  getGeolocation(getGeolocationCb);
+  /* Init location search box */
+  locationSearch(getGeolocationCb);
+});
+
+
 /* Globals  ----------------------------------------------------------------- */
 
 let tempUnits = 'C';
@@ -504,15 +516,3 @@ function locationSearch(callback) {
 function showSpinner() {
   $('#weather-icon').removeClass().addClass('fa fa-cog fa-spin');
 }
-
-
-/* Start of script ---------------------------------------------------------- */
-
-$(document).ready(function() {
-  /* Show loading spinner */
-  showSpinner();
-  /* Get geolocation */
-  getGeolocation(getGeolocationCb);
-  /* Init location search box */
-  locationSearch(getGeolocationCb);
-});

@@ -1,7 +1,7 @@
 # Weather App
 
-An app to display the local weather and time. See it on 
-[Codepen](https://codepen.io/iNaesu/pen/mwaOmx). Features:
+An app to display the local weather and time. See it on
+[Codepen](https://codepen.io/seanlaw/pen/mwaOmx). Features:
 * Location search
 * Color themes & weather icons that change based on the current weather and time
   of day
@@ -27,11 +27,11 @@ To run the app locally, run the following command in the project root:
 
     $ gulp serve
 
-This will launch the app on http://localhost:3000 and reload the app when any 
+This will launch the app on http://localhost:3000 and reload the app when any
 changes are made to:
 * index.html
 * scss/style.scss
-* js/index.js 
+* js/index.js
 
 
 # Built with
@@ -41,5 +41,5 @@ changes are made to:
 
 # License
 
-This project is licensed under the [MIT](https://opensource.org/licenses/MIT) 
+This project is licensed under the [MIT](https://opensource.org/licenses/MIT)
 License.
