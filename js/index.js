@@ -424,8 +424,10 @@ function applyTheme(themesLUT, weatherData, timezoneData) {
 
   /* Set bg and fg colors */
   $('body').css('color', fgColor).css('background-color', bgColor);
-  /* Temp control colors */
+  /* Control panel colors */
   $('#temp-control').css('color', bgColor).css('background-color', fgColor);
+  $('#github-icon').css('color', fgColor);
+  $('#website-icon').css('color', fgColor);
   /* Google search box colors */
   $('#location-search')
     .css('color', bgColor).css('background-color', fgColor);
