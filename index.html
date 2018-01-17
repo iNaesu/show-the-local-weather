@@ -15,16 +15,6 @@
   <body>
     <div id="control-panel">
       <div id="temp-control" class="grow"></div>
-
-      <a id="github-icon" href="https://github.com/iNaesu/show-the-local-weather"
-      target="_blank" rel="noopener noreferrer">
-        <i class="fa fa-github" aria-hidden="true"></i>
-      </a>
-
-      <a id="website-icon" href="https://seanlaw.io" target="_blank"
-      rel="noopener noreferrer">
-        <i class="fa fa-user-circle" aria-hidden="true"></i>
-      </a>
     </div>
 
     <div id="content">
@@ -36,17 +26,17 @@
 
       <div id="weather-other">
         <div class="weather-other-el">
-          <i id="temp-max-icon" aria-hidden="true"></i>
+          <i id="temp-max-icon" class="fa fa-long-arrow-up hidden"></i>
           <h6 id="temp-max"></h6>
         </div>
 
         <div class="weather-other-el">
-          <i id="temp-min-icon" aria-hidden="true"></i>
+          <i id="temp-min-icon" class="fa fa-long-arrow-down hidden"></i>
           <h6 id="temp-min"></h6>
         </div>
 
         <div class="weather-other-el">
-          <i id="humidity-icon" aria-hidden="true"></i>
+          <i id="humidity-icon" class="fa fa-tint hidden"></i>
           <h6 id="humidity"></h6>
         </div>
       </div>
@@ -56,12 +46,25 @@
         <h6 id="date"></h6>
       </div>
       <div id="location-search-wrapper">
-        <i id="search-icon" class="fa fa-search" aria-hidden="true"></i>
+        <i id="search-icon" class="fa fa-search" class="hidden"></i>
         <input id="location-search" class="controls" type="text" placeholder="">
       </div>
 
       <div id="error-msg"></div>
+
+      <div id="about-me">
+        <a id="github-icon" href="https://github.com/iNaesu/show-the-local-weather"
+        target="_blank" rel="noopener noreferrer">
+          <i class="fa fa-code-fork" class="hidden"></i>
+        </a>
+
+        <a id="website-icon" href="https://seanlaw.io" target="_blank"
+        rel="noopener noreferrer">
+          <i class="fa fa-user-circle" class="hidden"></i>
+        </a>
+      </div>
     </div>
+
     <div id="spacer"></div>
 
     <script src="https://maps.googleapis.com/maps/api/js?key=AIzaSyAJweTA4a_krVKkipVQ1DtVu4DYjnr44dA&libraries=places"></script>

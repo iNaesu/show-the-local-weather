@@ -31,6 +31,10 @@ $circle-diameter: 2.5rem;
   transform: scale(1.4);
 }
 
+.hidden {
+  display: none;
+}
+
 
 /* Document ----------------------------------------------------------------- */
 
@@ -74,14 +78,6 @@ html, body {
   @extend .center;
   font-weight: 700;
   cursor: pointer;
-}
-
-
-/* Social icons ------------------------------------------------------------- */
-
-#github-icon, #website-icon {
-  color: transparent;
-  font-size: $circle-diameter;
 }
 
 
@@ -194,3 +190,20 @@ html, body {
  margin: 1.5rem 0 0 0;
 }
 
+
+/* Social icons ------------------------------------------------------------- */
+
+#about-me {
+  text-align: center;
+}
+#github-icon, #website-icon {
+  color: transparent;
+  padding: 1rem;
+  text-decoration: none;
+}
+#github-icon {
+  font-size: $circle-diameter;
+}
+#website-icon {
+  font-size: $circle-diameter;
+}
