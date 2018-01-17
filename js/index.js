@@ -335,15 +335,15 @@ function displayWeather(weatherData, tempUnits, timezoneData) {
   $('#weather-main').text(weatherData.description);
 
   /* Max temp */
-  $('#temp-max-icon').addClass('fa fa-long-arrow-up');
+  $('#temp-max-icon').removeClass('hidden');
   $('#temp-max').text(tempMax + '°' + tempUnits);
 
   /* Min temp */
-  $('#temp-min-icon').addClass('fa fa-long-arrow-down');
+  $('#temp-min-icon').removeClass('hidden');
   $('#temp-min').text(tempMin + '°' + tempUnits);
 
   /* humidity */
-  $('#humidity-icon').addClass('fa fa-tint');
+  $('#humidity-icon').removeClass('hidden');
   $('#humidity').text(weatherData.humidity + '%');
 }
 
@@ -424,8 +424,10 @@ function applyTheme(themesLUT, weatherData, timezoneData) {
 
   /* Set bg and fg colors */
   $('body').css('color', fgColor).css('background-color', bgColor);
-  /* Temp control colors */
+  /* Control panel colors */
   $('#temp-control').css('color', bgColor).css('background-color', fgColor);
+  $('#github-icon').css('color', fgColor);
+  $('#website-icon').css('color', fgColor);
   /* Google search box colors */
   $('#location-search')
     .css('color', bgColor).css('background-color', fgColor);

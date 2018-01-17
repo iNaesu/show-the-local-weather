@@ -14,10 +14,11 @@ $font-stack: 'Quicksand', sans-serif;
   align-items: center;
 }
 
+$circle-diameter: 2.5rem;
 .circle {
   border-radius: 50%;
-  width: 2.5rem;
-  height: 2.5rem;
+  width: $circle-diameter;
+  height: $circle-diameter;
 }
 
 .grow {
@@ -28,6 +29,10 @@ $font-stack: 'Quicksand', sans-serif;
 }
 .grow:active {
   transform: scale(1.4);
+}
+
+.hidden {
+  display: none;
 }
 
 
@@ -80,7 +85,7 @@ html, body {
 
 #content, #datetime {
   * {
-    text-align: center;   
+    text-align: center;
   }
   @extend .center;
   flex-direction: column;
@@ -167,7 +172,7 @@ html, body {
 
     .pac-item-query, .pac-matched {
       color: inherit;
-    }   
+    }
     .pac-icon.pac-icon-marker {
       background-color: 'purple';
     }
@@ -180,7 +185,25 @@ html, body {
 
 
 /* Error msg ---------------------------------------------------------------- */
+
 #error-msg {
  margin: 1.5rem 0 0 0;
 }
 
+
+/* Social icons ------------------------------------------------------------- */
+
+#about-me {
+  text-align: center;
+}
+#github-icon, #website-icon {
+  color: transparent;
+  padding: 1rem;
+  text-decoration: none;
+}
+#github-icon {
+  font-size: $circle-diameter;
+}
+#website-icon {
+  font-size: $circle-diameter;
+}
