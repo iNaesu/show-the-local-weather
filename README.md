@@ -1,7 +1,10 @@
 # Weather App
 
-An app to display the local weather and time. See it on
-[Codepen](https://codepen.io/seanlaw/pen/mwaOmx). Features:
+An app to display the local weather and time. See it
+[Live](https://inaesu.github.io/show-the-local-weather/)
+or on [Codepen](https://codepen.io/seanlaw/pen/mwaOmx).
+
+Features:
 * Location search
 * Color themes & weather icons that change based on the current weather and time
   of day
