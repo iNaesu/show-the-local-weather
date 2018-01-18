@@ -1,0 +1,148 @@
+/* Reusables ---------------------------------------------------------------- */
+/* Font sizes */
+.center, #temp-control, #content, #datetime, #temp-location, #weather-other, .weather-other-el, #location-search-wrapper {
+  display: flex;
+  justify-content: center;
+  align-items: center; }
+
+.circle, #temp-control {
+  border-radius: 50%;
+  width: 2.5rem;
+  height: 2.5rem; }
+
+.grow {
+  transition: all .05s ease-in-out; }
+
+.grow:hover {
+  transform: scale(1.2); }
+
+.grow:active {
+  transform: scale(1.4); }
+
+.hidden {
+  display: none; }
+
+/* Document ----------------------------------------------------------------- */
+/* Uppercase all text. */
+div {
+  text-transform: uppercase; }
+
+html, body {
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+  width: 100%;
+  font-size: 11px;
+  letter-spacing: 2.2px;
+  font-family: "Quicksand", sans-serif;
+  height: 100%;
+  min-height: 400px; }
+  @media (min-width: 768px) {
+    html, body {
+      font-size: 15px;
+      letter-spacing: 3px; } }
+  @media (min-width: 768px) {
+    html, body {
+      min-height: 600px; } }
+
+/* Temp Control ------------------------------------------------------------- */
+#control-panel {
+  display: flex;
+  justify-content: left;
+  flex-direction: column;
+  width: 100%;
+  padding: 2rem 0 0 2rem; }
+
+#temp-control {
+  font-weight: 700;
+  cursor: pointer; }
+
+/* Weather info ------------------------------------------------------------- */
+#content, #datetime {
+  flex-direction: column;
+  align-self: center; }
+  #content *, #datetime * {
+    text-align: center; }
+
+#weather-icon {
+  font-size: 7rem;
+  margin: 0 0 1.5rem 0; }
+
+#temp-location {
+  flex-direction: row; }
+
+#weather-other {
+  width: 15rem;
+  justify-content: space-around;
+  flex-direction: row; }
+
+.weather-other-el {
+  flex-direction: row; }
+  .weather-other-el h6 {
+    margin-bottom: 0; }
+
+#temp-max-icon, #temp-min-icon, #humidity-icon {
+  margin-right: 0.4rem; }
+
+#datetime {
+  margin: 1.5rem 0 1.5rem 0; }
+
+/* Location search box ------------------------------------------------------ */
+#location-search-wrapper {
+  flex-direction: row; }
+
+#location-search {
+  display: none;
+  margin: 0 0 0 0.5rem;
+  border-radius: 100rem;
+  border: none;
+  width: 15rem;
+  text-transform: uppercase;
+  font-family: "Quicksand", sans-serif;
+  font-weight: 700;
+  letter-spacing: 1.1px; }
+  @media (min-width: 768px) {
+    #location-search {
+      letter-spacing: 1.5px; } }
+
+#location-search:focus {
+  outline: 0; }
+
+#search-icon {
+  display: none; }
+
+/* Location searchbox dropdown (Google searchbox) --------------------------- */
+.pac-container {
+  font-family: "Quicksand", sans-serif;
+  letter-spacing: 1.1px; }
+  @media (min-width: 768px) {
+    .pac-container {
+      letter-spacing: 1.5px; } }
+  .pac-container .pac-item {
+    border: none;
+    color: inherit; }
+    .pac-container .pac-item .pac-item-query, .pac-container .pac-item .pac-matched {
+      color: inherit; }
+    .pac-container .pac-item .pac-icon.pac-icon-marker {
+      background-color: 'purple'; }
+  .pac-container .pac-item:hover, .pac-container .pac-item-selected {
+    background-color: transparent; }
+
+/* Error msg ---------------------------------------------------------------- */
+#error-msg {
+  margin: 1.5rem 0 0 0; }
+
+/* Social icons ------------------------------------------------------------- */
+#about-me {
+  text-align: center; }
+
+#github-icon, #website-icon {
+  color: transparent;
+  padding: 1rem;
+  text-decoration: none; }
+
+#github-icon {
+  font-size: 2.5rem; }
+
+#website-icon {
+  font-size: 2.5rem; }
